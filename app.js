@@ -1,17 +1,7 @@
 const http = require("http");
 const routes = require("./routes");
 
-// NOTE: when running the server, it will be cached and so it will not be reloaded when updating the code
-
-// --- CREATE SERVER ---
-// This request will run for every request that comes in for the server
-// function rqListener(req, res) {}
-// http.createServer(rqListener);
-
-// OR (anonymous function)
-// http.createServer(function (req, res) {});
-
-// OR (arrow function)
+// Create a server
 const server = http.createServer(routes);
 server.listen(3000);
 

@@ -1,6 +1,28 @@
 # the basics of Node.js
 
-[explain the basic of node.js here]
+Any web developer should understand Node.js. and know how to use it. The goal of this small project is to show you how to use Node.js without express and how it works under the hood.
+
+It's probably not a project that you would want to use in production, but it's a good starting point to understand how Node.js works.
+
+## Configuration
+
+The starting point of this project is the app.js file. It is responsible to create the server, register the routes and listen to a port.
+
+## Create a server
+
+With Node.js, unlike PHP or other server-side languages, you have to create your own server. This is done using the built-in `http module`. The server can get created using 3 differents syntaxes:
+
+```javascript
+// Using named a function
+function rqListener(req, res) {}
+http.createServer(rqListener);
+
+// Using an anonymous function
+http.createServer(function (req, res) {});
+
+// Using an arrow function
+http.createServer((req, res) => {});
+```
 
 ## Package manager
 
@@ -16,13 +38,15 @@ Inside the package.json file, you can add any scripts you want. For now, let's a
 
 ### Installing packages
 
-To install a package, you can use the npm install command. For example, to install the express package, you would run npm install express. This will create a new directory called node_modules and download the package to that directory.
+To install a package, you can use the npm install command. This will create a new directory called node_modules and download the package to that directory.
 
 There are two types of packages you can install. Development dependencies are packages that are only needed during development, such as testing packages. To install a package as a development dependency, you can add the --save-dev flag to the install command. For example, to install the mocha testing framework, you would run npm install mocha --save-dev. You can also install packages globally by adding the -g flag to the install command.
 
 ### Using packages
 
-The first package we will install is nodemon. This is a utility that will monitor for any changes in your source and automatically restart your server. To install nodemon, run npm install nodemon --save-dev. Now, let's add a new script to our package.json file that will run our server with nodemon:
+When writting your code, you will experience a pretty anoying thing: you will have to rerun you server every time you make a change. This is where nodemon comes in. It is a package that will monitor for any changes in your source and automatically restart your server.
+
+To install nodemon, run `npm install nodemon --save-dev`. Now, let's add a new script to our package.json file that will run our server with nodemon:
 
 ```json
 "scripts": {
@@ -68,3 +92,21 @@ To have the debugger restart on file change, you can use nodemon. To do so, you 
 ```
 
 For this to work, you might have to install nodemon globally by running `npm install -g nodemon`.
+
+# Deeper dive
+
+Understanding the basics and how things work fundamentally is crucial. You don't want to just learn by heart how to use a framework or a library. You want to understand how it works under the hood.
+
+## The event loop
+
+Node.js is single-threaded. This means that it can only execute one thing at a time. This is why it is so important to write non-blocking code. This is where the event loop comes in. The event loop is what allows Node.js to perform non-blocking I/O operations, even though JavaScript is single-threaded.
+
+Every loop iteration is called a tick. During each tick, the event loop checks for events and executes the appropriate callbacks.
+
+The phases of the event loop are:
+
+- **timers**: this phase executes callbacks scheduled by `setTimeout()` and `setInterval()`.
+- **pending callbacks**: executes I/O callbacks deferred to the next loop iteration.
+- **poll**: retrieve new I/O events; execute I/O related callbacks (almost all with the exception of close callbacks, the ones scheduled by timers, and `setImmediate()`).
+- **check**: `setImmediate()` callbacks are invoked here.
+- **close callbacks**: some close callbacks, like `socket.on('close', ...)`, are executed here.
